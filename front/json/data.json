@@ -1,0 +1,55 @@
+{
+  "productOptions": [
+    {
+      "value": "学员APP",
+      "label": "学员APP"
+    },
+    {
+      "value": "教练APP",
+      "label": "教练APP"
+    },
+    {
+      "value": "中央子系统",
+      "label": "中央子系统"
+    },
+    {
+      "value": "驾校子系统",
+      "label": "驾校子系统"
+    },
+    {
+      "value": "考场子系统",
+      "label": "考场子系统"
+    },
+    {
+      "value": "医院子系统",
+      "label": "医院子系统"
+    },
+    {
+      "value": "第三方子系统",
+      "label": "第三方子系统"
+    },
+    {
+      "value": "批处理子系统",
+      "label": "批处理子系统"
+    },
+    {
+      "value": "其他",
+      "label": "其他"
+    }
+  ],
+  "departmentOptions": [
+    {
+      "value": "技术部",
+      "label": "技术部"
+    }
+  ],
+  "progressOptions": [
+    {
+      "value": "1",
+      "label": "已完成"
+    }, {
+      "value": "0",
+      "label": "未完成"
+    }
+  ]
+}

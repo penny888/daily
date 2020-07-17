@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.daily.dao.mybatis.DailyMapper">
+    <select id="searchDaily" resultType="com.daily.entity.DailyContent">
+        SELECT
+            id,
+            user_id,
+            product,
+            content,
+            progress,
+            note,
+            insert_dt
+        FROM
+            daily_content
+        WHERE
+            delete_flag = '0'
+        AND
+            user_id = #{userId}
+        <if test="product != null and product != ''">
+            AND
+                product = #{product}
+        </if>
+        <if test="content != null and content != ''">
+            AND
+                content LIKE CONCAT('%', #{content}, '%')
+        </if>
+        <if test="progress != null">
+            <choose>
+                <when test="progress == 1">
+                    AND
+                        progress = 100
+                </when>
+                <when test="progress == 0">
+                    <![CDATA[
+                    AND
+                        progress < 100
+                    ]]>
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+        </if>
+        <if test="startDt != null and startDt != ''">
+            <![CDATA[
+            AND
+                insert_dt >= #{startDt}
+            ]]>
+        </if>
+        <if test="endDt != null and endDt != ''">
+            <![CDATA[
+            AND
+                insert_dt <= #{endDt}
+            ]]>
+        </if>
+        ORDER BY insert_dt DESC
+    </select>
+
+
+
+    <select id="countDaily" resultType="int">
+        SELECT
+            count(distinct left(insert_dt, 10))
+        FROM
+            daily_content
+        WHERE
+            delete_flag = '0'
+        AND
+            user_id = #{userId}
+        <if test="product != null and product != ''">
+            AND
+            product = #{product}
+        </if>
+        <if test="content != null and content != ''">
+            AND
+            content LIKE CONCAT('%', #{content}, '%')
+        </if>
+        <if test="progress != null">
+            <choose>
+                <when test="progress == 1">
+                    AND
+                    progress = 100
+                </when>
+                <when test="progress == 0">
+                    <![CDATA[
+                    AND
+                        progress < 100
+                    ]]>
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+        </if>
+        <if test="startDt != null and startDt != ''">
+            <![CDATA[
+            AND
+                insert_dt >= #{startDt}
+            ]]>
+        </if>
+        <if test="endDt != null and endDt != ''">
+            <![CDATA[
+            AND
+                insert_dt <= #{endDt}
+            ]]>
+        </if>
+    </select>
+
+
+    <select id="listTotalDaily" resultMap="listTotalDailyMap">
+        SELECT
+            a.id,
+            a.name,
+            b.user_id,
+            b.product,
+            b.progress,
+            b.content,
+            b.note
+        FROM
+            daily_user a
+        LEFT JOIN
+            daily_content b
+        ON
+            a.id = b.user_id
+        AND
+            b.delete_flag = '0'
+        WHERE
+            a.delete_flag = '0'
+        AND
+            a.is_admin = '0'
+        AND
+            a.department = #{department}
+        AND
+            LEFT(b.insert_dt, 10) = #{currentDay}
+    </select>
+
+    <resultMap id="listTotalDailyMap" type="com.daily.dto.TotalDailyDto">
+        <result property="name" column="name"/>
+        <collection property="content" ofType="com.daily.entity.DailyContent">
+            <result property="userId" column="user_id"/>
+            <result property="product" column="product"/>
+            <result property="content" column="content"/>
+            <result property="progress" column="progress"/>
+            <result property="note" column="note"/>
+        </collection>
+    </resultMap>
+</mapper>

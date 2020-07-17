@@ -1,0 +1,1707 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>日报系统主页</title>
+    <!--<link rel="stylesheet" href="../css/index.css">-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            background-color: #f5f5f5;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+
+        #app {
+            margin: 0 7.5%;
+            min-height: 100%;
+            background-color: #fff;
+        }
+
+        .el-tabs__content {
+            min-height: 450px;
+        }
+
+        .el-menu > li:not(.nav-banner) {
+            float: right !important;
+        }
+
+        .el-menu--horizontal > .el-menu-item {
+            color: #303133;
+        }
+
+        .el-menu--horizontal > .el-menu-item.is-active {
+            border-bottom: 2px solid #fff;
+        }
+
+        .vertical-separator {
+            margin-top: 20px;
+            width: 1px;
+            height: 20px;
+            padding: 0;
+            background-color: #ebebeb !important;
+        }
+
+        .nav-banner {
+            float: left !important;
+            padding: 0 20px;
+            width: 200px;
+            height: 100%;
+            line-height: 60px;
+            font-size: 24px;
+            cursor: default;
+            font-weight: bold;
+            color: #666;
+            /*text-shadow: 2px 4px 4px #888;*/
+        }
+
+        .nav-banner:focus {
+            outline: none !important;
+        }
+
+        .el-main {
+            padding: 20px 40px;
+        }
+
+        .el-tabs--border-card > .el-tabs__content {
+            padding: 15px 30px;
+        }
+
+        li {
+            list-style: none !important;
+        }
+
+        .daily_table_header .el-table__body-wrapper {
+            display: none !important;
+        }
+
+        .daily_table_header .el-table__header-wrapper {
+            overflow: auto !important;
+        }
+
+        .el-table .cell {
+            padding: 0 !important;
+        }
+
+        .daily_table_header th {
+            background-color: #F5F7FA !important;
+        }
+
+        .el-table--enable-row-hover .el-table__body tr:hover > td {
+            background-color: #fff !important;
+        }
+
+        .daily_inside_table .el-table__row > td:nth-child(2) div, .daily_inside_table .el-table__row > td:nth-child(4) div {
+            white-space: pre-line !important;
+        }
+
+        .daily_inside_table .el-table--enable-row-hover .el-table__body tr:hover > td {
+            background: #F5F7FA !important;
+        }
+
+        .daily_inside_table.el-table tr:hover > td {
+            background: #F5F7FA !important;
+        }
+
+        .daily_table.el-table td {
+            padding: 0 !important;
+        }
+
+        .daily_inside_table.el-table td {
+            border-top: 1px solid #EBEEF5 !important;
+            border-bottom: 0 !important;
+            padding: 12px 15px !important;
+        }
+
+        .daily_inside_table::before {
+            height: 0 !important;
+        }
+
+        .daily_inside_table .el-table__row > td:last-child {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        #changePwdDialog .el-dialog__body {
+            padding: 15px 25px 20px;
+        }
+
+        #changePwdDialog .el-form-item__content {
+            margin: 0 20px !important;
+        }
+
+        #changePwdDialog .el-form-item {
+            margin-bottom: 0 !important;
+        }
+
+        .el-message-box {
+            width: 400px;
+        }
+
+        .el-textarea textarea {
+            height: 100% !important;
+            resize: none !important;
+        }
+
+        #addDailyDialog .el-form {
+            padding-top: 10px !important;
+            padding-bottom: 10px !important;
+            margin-bottom: 15px !important;
+            /*border-bottom: 1px solid #DCDFE6 !important;*/
+        }
+
+        #editDailyDialog .dialog-footer, #addDailyDialog .dialog-footer {
+            text-align: center !important;
+        }
+
+        #editDailyDialog .el-dialog__body, #addDailyDialog .el-dialog__body {
+            padding: 0 25px 10px;
+        }
+
+        #editUserDialog .dialog-footer, #addUserDialog .dialog-footer, #changePersonalInfoDialog .dialog-footer {
+            text-align: center !important;
+        }
+
+        #editUserDialog .el-dialog__body, #addUserDialog .el-dialog__body, #changePersonalInfoDialog .el-dialog__body {
+            padding: 20px 25px 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <!-- 头部 -->
+        <el-header style="padding: 0;">
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                     @select="handleSelect">
+                <el-menu-item index="1" @click="logout()">退出登录</el-menu-item>
+                <li class="vertical-separator"></li>
+                <el-menu-item index="2" @click="changePwdDialogVisible = true" v-show="changePwdLinkVisible">修改密码
+                </el-menu-item>
+                <el-menu-item index="2" @click="changePersonalInfo()" v-show="changePersonalInfoVisible">修改个人信息
+                </el-menu-item>
+                <li class="vertical-separator"></li>
+                <el-menu-item index="3" style="cursor: default!important;">
+                    {{ department }}—{{ username }}
+                </el-menu-item>
+                <li class="vertical-separator"></li>
+                <el-menu-item index="4" style="cursor: default!important;">
+                    {{ account }}
+                </el-menu-item>
+                <li class="nav-banner">日报管理系统</li>
+            </el-menu>
+        </el-header>
+        <!-- 主体 -->
+        <el-main>
+            <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
+                <!-- 日报管理 -->
+                <el-tab-pane label="日报管理" name="first">
+                    <!-- 日志所属人 -->
+                    <div v-show="dailyOwnerVisible"
+                         style="height: 40px; line-height: 40px; text-align: center; font-size: 20px; font-weight: bold; color: #666;">
+                        {{ dailyOwner }}的日志
+                    </div>
+                    <!-- 日报管理搜索表单 -->
+                    <el-form :model="dailyForm" style="margin-top: 10px;">
+                        <el-select v-model="dailyForm.product" clearable placeholder="请选择产品" class="product"
+                                   style="width: 18%;">
+                            <el-option
+                                    v-for="item in productOptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+
+                        <el-select v-model="dailyForm.progress" clearable placeholder="请选择进度" class="progress"
+                                   style="width: 12%;">
+                            <el-option
+                                    v-for="item in progressOptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+
+                        <el-input placeholder="请输入日报内容"
+                                  v-model="dailyForm.content"
+                                  clearable class="content" style="width: 25%;">
+                        </el-input>
+
+                        <el-date-picker
+                                v-model="dailyForm.dateRange"
+                                type="daterange"
+                                range-separator="至"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期" style="width: 25%;">
+                        </el-date-picker>
+                        <el-button size="medium" @click="searchDaily()">搜索</el-button>
+                        <el-button size="large" type="primary" @click="addDaily()" v-show="addDailyBtnVisible">写日报
+                        </el-button>
+                    </el-form>
+
+                    <!-- 日报管理表头 -->
+                    <el-table
+                            :data="dailyTableHeaderList"
+                            border
+                            style="width: 100%; margin-top: 20px; overflow: auto;" class="daily_table_header">
+                        <el-table-column
+                                prop="day"
+                                label="日期"
+                                align="center"
+                                width="150">
+                        </el-table-column>
+                        <el-table-column
+                                prop="product"
+                                label="所属产品"
+                                align="center"
+                                min-width="150">
+                        </el-table-column>
+                        <el-table-column
+                                prop="content"
+                                label="任务内容"
+                                align="center"
+                                min-width="300">
+                        </el-table-column>
+                        <el-table-column
+                                prop="content"
+                                label="任务进度"
+                                align="center"
+                                min-width="150">
+                        </el-table-column>
+                        <el-table-column
+                                prop="note"
+                                label="任务备注"
+                                align="center"
+                                min-width="200">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                min-width="180"
+                                align="center">
+                        </el-table-column>
+                    </el-table>
+                    <!-- 日报管理表格内容 -->
+                    <el-table
+                            :data="dailyList"
+                            :show-header="showHeader"
+                            border
+                            v-loading="tableLoading"
+                            style="width: 100%" class="daily_table">
+                        <el-table-column
+                                prop="day"
+                                label="日期"
+                                align="center"
+                                width="150">
+                            <template slot-scope="scope">
+                                <span style="font-size: 18px; font-weight: bold; color: #666;">{{ scope.row.day | dayConvert }}</span>
+                                <br>
+                                <span style="font-size: 16px; color: #333;">{{ scope.row.day | weekDayConvert }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column>
+                            <template slot-scope="scope">
+                                <el-table
+                                        :show-header="showHeader"
+                                        :data="scope.row.content"
+                                        style="width: 100%" class="daily_inside_table">
+                                    <el-table-column
+                                            prop="product"
+                                            label="所属产品"
+                                            align="center"
+                                            min-width="150">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="content"
+                                            label="任务内容"
+                                            align="center"
+                                            min-width="300">
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="progress"
+                                            align="center"
+                                            label="任务进度"
+                                            min-width="150">
+                                        <template slot-scope="scope">
+                                            {{ scope.row.progress | progressConvert }}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="note"
+                                            align="center"
+                                            label="任务备注"
+                                            min-width="200">
+                                    </el-table-column>
+                                    <el-table-column
+                                            label="操作"
+                                            min-width="180"
+                                            align="center">
+                                        <template slot-scope="scope1">
+                                            <div style="padding-left: 10px; padding-right: 10px;">
+                                                <el-button
+                                                        size="mini"
+                                                        type="primary"
+                                                        v-show="editDailyBtnShow"
+                                                        @click="editDaily(scope1.row)"
+                                                >编辑
+                                                </el-button>
+                                                <el-button
+                                                        size="mini"
+                                                        type="danger"
+                                                        v-show="delDailyBtnShow"
+                                                        @click="delDaily(scope1.row, scope1.$index, scope.row.content)"
+                                                >删除
+                                                </el-button>
+                                            </div>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination
+                            style="text-align: right; margin: 30px 0 20px;"
+                            background
+                            :page-sizes="[5, 10, 15, 20]"
+                            :page-size="dailyForm.pageSize"
+                            layout="jumper, sizes, prev, pager, next,total"
+                            :total="dailyTotal"
+                            @size-change="handleDailySizeChange"
+                            @current-change="handleDailyCurrentChange"
+                    >
+                    </el-pagination>
+                </el-tab-pane>
+                <!-- 员工管理 -->
+                <el-tab-pane label="员工管理" name="second">
+                    <!-- 员工管理搜索表单 -->
+                    <el-form :model="userForm" style="margin-top: 10px;">
+                        <el-select v-model="userForm.department" clearable placeholder="请选择部门" class="department"
+                                   style="width: 15%;">
+                            <el-option
+                                    v-for="item in departmentOptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+
+                        <el-input placeholder="请输入员工姓名"
+                                  v-model="userForm.name"
+                                  clearable class="username" style="width: 15%;">
+                        </el-input>
+
+                        <el-input placeholder="请输入员工账户"
+                                  v-model="userForm.account"
+                                  clearable class="account" style="width: 15%;">
+                        </el-input>
+
+                        <el-date-picker
+                                v-model="userForm.dateRange"
+                                type="daterange"
+                                range-separator="至"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期" style="width: 25%;">
+                        </el-date-picker>
+
+                        <el-button size="medium" @click="searchUser()" style="">搜索</el-button>
+                        <el-button size="large" type="primary" @click="addUser()" style="">添加员工</el-button>
+                    </el-form>
+
+                    <el-table
+                            :data="userList"
+                            v-loading="tableLoading"
+                            style="width: 100%; margin-top: 20px;" class="user_table">
+                        <el-table-column
+                                type="index"
+                                label="序号"
+                                align="center"
+                                min-width="80">
+                        </el-table-column>
+                        <el-table-column
+                                prop="name"
+                                label="员工姓名"
+                                align="center"
+                                min-width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="account"
+                                label="账户"
+                                align="center"
+                                min-width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="department"
+                                align="center"
+                                label="所属部门"
+                                min-width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="insertDt"
+                                align="center"
+                                min-width="220"
+                                label="创建日期">
+                        </el-table-column>
+                        <el-table-column
+                                label="操作"
+                                min-width="220"
+                                align="center">
+                            <template slot-scope="scope">
+                                <el-button
+                                        type="primary"
+                                        plain
+                                        size="mini"
+                                        @click="getUserDaily(scope.row)"
+                                >查看日报
+                                </el-button>
+                                <el-button
+                                        size="mini"
+                                        type="primary"
+                                        @click="editUser(scope.row)"
+                                >编辑
+                                </el-button>
+                                <el-button
+                                        size="mini"
+                                        type="danger"
+                                        @click="delUser(scope.row, scope.$index, userList)"
+                                >删除
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination
+                            style="text-align: right; margin: 30px 0 20px;"
+                            background
+                            :page-sizes="[5, 10, 15, 20]"
+                            :page-size="userForm.pageSize"
+                            layout="jumper, sizes, prev, pager, next,total"
+                            :total="userTotal"
+                            @size-change="handleUserSizeChange"
+                            @current-change="handleUserCurrentChange"
+                    >
+                    </el-pagination>
+                </el-tab-pane>
+                <!-- 日报汇总 -->
+                <el-tab-pane label="日报汇总" name="three">
+                    <!-- 日报汇总搜索表单 -->
+                    <el-form :model="totalDailyForm" style="margin-top: 10px;">
+                        <el-select v-model="totalDailyForm.department" clearable placeholder="请选择部门" class="department"
+                                   style="width: 20%;">
+                            <el-option
+                                    v-for="item in departmentOptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-date-picker
+                                v-model="totalDailyForm.currentDay"
+                                align="right"
+                                type="date"
+                                placeholder="选择日期"
+                                :picker-options="pickerOptions" style="width: 20%;">
+                        </el-date-picker>
+                        <el-button size="medium" @click="searchTotalDaily()">搜索</el-button>
+                        </el-button>
+                        <el-button type="primary" @click="showPrevDaily()">上一日</el-button>
+                        <el-button type="primary" @click="showNextDaily()">下一日</el-button>
+                    </el-form>
+
+                    <!-- 日报汇总表头 -->
+                    <el-table
+                            :data="dailyTableHeaderList"
+                            border
+                            style="width: 100%; margin-top: 20px; overflow: auto;" class="daily_table_header">
+                        <el-table-column
+                                prop="day"
+                                label="日期"
+                                align="center"
+                                width="150">
+                        </el-table-column>
+                        <el-table-column
+                                prop="员工姓名"
+                                label="员工姓名"
+                                align="center"
+                                width="150">
+                        </el-table-column>
+                        <el-table-column
+                                prop="product"
+                                label="所属产品"
+                                align="center"
+                                min-width="150">
+                        </el-table-column>
+                        <el-table-column
+                                prop="content"
+                                label="任务内容"
+                                align="center"
+                                min-width="300">
+                        </el-table-column>
+                        <el-table-column
+                                prop="content"
+                                label="任务进度"
+                                align="center"
+                                min-width="150">
+                        </el-table-column>
+                        <el-table-column
+                                prop="note"
+                                label="任务备注"
+                                align="center"
+                                min-width="200">
+                        </el-table-column>
+                    </el-table>
+                    <!-- 日报汇总表格内容 -->
+                    <el-table
+                            :data="totalDailyList"
+                            :show-header="showHeader"
+                            border
+                            v-loading="tableLoading"
+                            style="width: 100%" class="daily_table">
+                        <el-table-column
+                                prop="currentDay"
+                                label="日期"
+                                align="center"
+                                width="150">
+                            <template slot-scope="scope">
+                                <span style="font-size: 18px; font-weight: bold; color: #666;">{{ scope.row.currentDay | dayConvert }}</span>
+                                <br>
+                                <span style="font-size: 16px; color: #333;">{{ scope.row.currentDay | weekDayConvert }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column>
+                            <template slot-scope="scope">
+                                <el-table
+                                        :show-header="showHeader"
+                                        :data="scope.row.contentList"
+                                        class="daily_table">
+                                    <el-table-column
+                                            prop="name"
+                                            label="员工姓名"
+                                            align="center"
+                                            width="150">
+                                    </el-table-column>
+                                    <el-table-column>
+                                        <template slot-scope="scope">
+                                            <el-table
+                                                    :show-header="showHeader"
+                                                    :data="scope.row.content"
+                                                    class="daily_inside_table">
+                                                <el-table-column
+                                                        prop="product"
+                                                        label="所属产品"
+                                                        align="center"
+                                                        min-width="150">
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="content"
+                                                        label="任务内容"
+                                                        align="center"
+                                                        min-width="300">
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="progress"
+                                                        align="center"
+                                                        label="任务进度"
+                                                        min-width="150">
+                                                    <template slot-scope="scope">
+                                                        {{ scope.row.progress | progressConvert }}
+                                                    </template>
+                                                </el-table-column>
+                                                <el-table-column
+                                                        prop="note"
+                                                        align="center"
+                                                        label="任务备注"
+                                                        min-width="200">
+                                                </el-table-column>
+                                            </el-table>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+            </el-tabs>
+        </el-main>
+    </el-container>
+
+    <!-- 写日报弹窗 -->
+    <el-dialog title="写日报" :visible.sync="addDailyDialogVisible" width="42%" id="addDailyDialog">
+        <!--<el-form :model="addDailyFormItem" :rules="rules" ref="addDailyFormItem{{index}}"-->
+        <!--v-for="(addDailyFormItem, key, index) in addDailyFormList">-->
+        <el-form :model="addDailyForm" ref="addDailyForm">
+            <!-- 循环开始  -->
+            <template v-for="(item, i) in addDailyForm.addDailyFormData">
+                <el-form-item v-if="item.titleFlag" id="addDailyFormItem`${(i + 6) / 6}`">
+                    <div style="width: 100%; height: 30px; line-height: 30px; text-align: center;
+                    font-size: 16px; color: #606266;">任务{{(i + 6) / 6}}
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                @click="delDailyItem(i)"
+                                v-show="item.deleteBtnShow"
+                                style="position: absolute; right: 10px;"
+                        >删除
+                        </el-button>
+                    </div>
+                </el-form-item>
+                <el-form-item v-if="item.productFlag" :label-width="labelWidth"
+                              :prop="'addDailyFormData.'+ i +'.product'"
+                              :rules="rules.product"
+                              :label="item.labelName">
+                    <el-select v-model="item.product" placeholder="请选择所属产品" style="width: 55%;">
+                        <el-option
+                                v-for="item1 in item.productOptions"
+                                :label="item1.label"
+                                :value="item1.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item v-if="item.progressFlag" :label-width="labelWidth"
+                              :prop="'addDailyFormData.'+ i +'.progress'"
+                              :rules="rules.progress"
+                              :label="item.labelName">
+                    <el-input-number v-model="item.progress" autocomplete="off" style="width: 55%;"
+                                     :min="1"
+                                     :max="100"></el-input-number>
+                </el-form-item>
+                <el-form-item v-if="item.contentFlag" :label-width="labelWidth"
+                              :prop="'addDailyFormData.'+ i +'.content'"
+                              :rules="rules.content"
+                              :label="item.labelName">
+                    <el-input type="textarea" v-model="item.content" autocomplete="off"
+                              style="height: 100px; width: 85%;"></el-input>
+                </el-form-item>
+                <el-form-item v-if="item.noteFlag" :label-width="labelWidth"
+                              :prop="'addDailyFormData.'+ i +'.note'"
+                              :label="item.labelName">
+                    <el-input type="textarea" v-model="item.note" autocomplete="off"
+                              style="height: 80px; width: 85%;"></el-input>
+                </el-form-item>
+                <el-form-item v-if="item.insertDtFlag" :label-width="labelWidth"
+                              :prop="'addDailyFormData.'+ i +'.insertDt'"
+                              :label="item.labelName">
+                    <el-date-picker
+                            v-model="item.insertDt"
+                            align="left"
+                            type="date"
+                            placeholder="选择日期"
+                            :picker-options="pickerOptions">
+                    </el-date-picker>
+                </el-form-item>
+            </template>
+        </el-form>
+
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="addDailyDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="insertDaily('addDailyForm')">确 定</el-button>
+            <el-button type="primary" plain @click="continueAddDaily()">继续添加任务</el-button>
+        </div>
+    </el-dialog>
+
+    <!-- 编辑日报弹窗 -->
+    <el-dialog title="编辑日报任务" :visible.sync="editDailyDialogVisible" width="42%" id="editDailyDialog">
+        <el-form :model="editDailyForm" :rules="rules" ref="editDailyForm">
+            <el-form-item label="所属产品" :label-width="labelWidth" prop="product">
+                <el-select v-model="editDailyForm.product" placeholder="请选择所属产品" style="width: 55%;">
+                    <el-option
+                            v-for="item in productOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="任务进度" :label-width="labelWidth" prop="progress">
+                <el-input-number v-model="editDailyForm.progress" autocomplete="off" style="width: 55%;" :min="1"
+                                 :max="100"></el-input-number>
+            </el-form-item>
+            <el-form-item label="任务内容" :label-width="labelWidth" prop="content">
+                <el-input type="textarea" v-model="editDailyForm.content" autocomplete="off"
+                          style="height: 100px; width: 85%;"></el-input>
+            </el-form-item>
+            <el-form-item label="任务备注" :label-width="labelWidth" prop="note">
+                <el-input type="textarea" v-model="editDailyForm.note" autocomplete="off"
+                          style="height: 80px; width: 85%;"></el-input>
+            </el-form-item>
+			<el-form-item label="任务日期" :label-width="labelWidth" prop="insertDt">
+				<el-date-picker
+                            v-model="editDailyForm.insertDt"
+                            align="left"
+                            type="date"
+                            placeholder="选择日期"
+                            :picker-options="pickerOptions">
+				</el-date-picker>
+			</el-form-item>	
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="editDailyDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="updateDaily('editDailyForm')">确 定</el-button>
+        </div>
+    </el-dialog>
+
+
+    <!-- 添加员工弹窗 -->
+    <el-dialog title="添加员工" :visible.sync="addUserDialogVisible" width="35%" id="addUserDialog">
+        <el-form :model="addUserForm" :rules="rules1" ref="addUserForm">
+            <el-form-item label="员工账户" :label-width="labelWidth" prop="account">
+                <el-input v-model="addUserForm.account" autocomplete="off" style="width: 85%;"></el-input>
+            </el-form-item>
+            <el-form-item label="员工姓名" :label-width="labelWidth" prop="name">
+                <el-input v-model="addUserForm.name" autocomplete="off" style="width: 85%;"></el-input>
+            </el-form-item>
+            <el-form-item label="所属部门" :label-width="labelWidth" prop="department">
+                <el-select v-model="addUserForm.department" placeholder="请选择所属部门" style="width: 85%;">
+                    <el-option
+                            v-for="item in departmentOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="员工密码" :label-width="labelWidth" prop="password">
+                <el-input type="password" v-model="addUserForm.password" show-password clearable autocomplete="off"
+                          placeholder="请输入密码" style="width: 85%;"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="addUserDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="insertUser('addUserForm')">确 定</el-button>
+        </div>
+    </el-dialog>
+
+
+    <!-- 编辑员工弹窗 -->
+    <el-dialog title="编辑员工" :visible.sync="editUserDialogVisible" width="35%" id="editUserDialog">
+        <el-form :model="editUserForm" :rules="rules" ref="editUserForm">
+            <el-form-item label="员工账户" :label-width="labelWidth" prop="account">
+                <el-input v-model="editUserForm.account" autocomplete="off" style="width: 85%;"></el-input>
+            </el-form-item>
+            <el-form-item label="员工姓名" :label-width="labelWidth" prop="name">
+                <el-input v-model="editUserForm.name" autocomplete="off" style="width: 85%;"></el-input>
+            </el-form-item>
+            <el-form-item label="所属部门" :label-width="labelWidth" prop="department">
+                <el-select v-model="editUserForm.department" placeholder="请选择所属部门" style="width: 85%;">
+                    <el-option
+                            v-for="item in departmentOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="员工密码" :label-width="labelWidth" prop="password">
+                <el-input type="password" v-model="editUserForm.password" show-password clearable autocomplete="off"
+                          placeholder="请输入密码" style="width: 85%;"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="editUserDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="updateUser('editUserForm')">确 定</el-button>
+        </div>
+    </el-dialog>
+
+
+    <!-- 修改个人信息 -->
+    <el-dialog title="修改个人信息" :visible.sync="changePersonalInfoDialogVisible" width="35%" id="changePersonalInfoDialog">
+        <el-form :model="editUserForm" :rules="rules" ref="changePersonalInfoForm">
+            <el-form-item label="账户" :label-width="labelWidth" prop="account">
+                <el-input v-model="editUserForm.account" autocomplete="off" style="width: 85%;"></el-input>
+            </el-form-item>
+            <el-form-item label="姓名" :label-width="labelWidth" prop="name">
+                <el-input v-model="editUserForm.name" autocomplete="off" style="width: 85%;"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" :label-width="labelWidth" prop="password">
+                <el-input type="password" v-model="editUserForm.password" show-password clearable autocomplete="off"
+                          placeholder="请输入密码" style="width: 85%;"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="changePersonalInfoDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="updateUser('changePersonalInfoForm')">确 定</el-button>
+        </div>
+    </el-dialog>
+
+    <!-- 修改密码弹窗 -->
+    <el-dialog title="修改密码" :visible.sync="changePwdDialogVisible" center width="30%" top="30vh" id="changePwdDialog">
+        <el-form :model="changePwdForm" :rules="rules1" ref="changePwdForm">
+            <el-form-item label="" :label-width="labelWidth" prop="password">
+                <el-input type="password" v-model="changePwdForm.password" show-password clearable autocomplete="off"
+                          placeholder="请输入新密码"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="changePwdDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="changePwd('changePwdForm')">确 定</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+<script src="../js/vue.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>-->
+<!--<script src="../js/index.js"></script>-->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="../js/axios.min.js"></script>
+<!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+<script src="../js/http.js"></script>
+<script src="../js/moment.js"></script>
+<script>
+    let vue = new Vue({
+        el: "#app",
+        data() {
+            let checkAccount = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入员工账户'));
+                } else if (!(/^^[a-zA-Z0-9]{4,10}$/.test(value))) {
+                    callback(new Error('账户必须为4到10位数字或英文字母'));
+                } else {
+                    callback();
+                }
+            };
+            let checkUsername = (rule, value, callback) => {
+                console.log(value);
+                if (value === '') {
+                    callback(new Error('请输入员工姓名'));
+                } else if (!(/^[\u4e00-\u9fa5]{2,10}$/.test(value))) {
+                    callback(new Error('姓名必须为2到10位汉字'));
+                } else {
+                    callback();
+                }
+            };
+            let checkDepartment = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请选择员工部门'));
+                } else if (!(/^[\u4e00-\u9fa5]{2,10}$/.test(value))) {
+                    callback(new Error('部门必须为2到10位汉字"'));
+                } else {
+                    callback();
+                }
+            };
+            let checkPassword = (rule, value, callback) => {
+                if (value && !(/^[a-zA-Z0-9]{6,12}$/.test(value))) {
+                    callback(new Error('请输入6-12位数字或英文字母密码'));
+                } else {
+                    callback();
+                }
+            };
+            let checkPassword1 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else if (!(/^[a-zA-Z0-9]{6,12}$/.test(value))) {
+                    callback(new Error('请输入6-12位数字或英文字母密码'));
+                } else {
+                    callback();
+                }
+            };
+            let checkProduct = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请选择所属产品'));
+                } else if (!(/^[a-zA-Z0-9\u4e00-\u9fa5]{2,10}$/.test(value))) {
+                    callback(new Error('所属产品必须为2到10位汉字、英文字母、数字'));
+                } else {
+                    callback();
+                }
+            };
+            let checkProgress = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入任务进度'));
+                } else if (!(/\d{1,3}/.test(value)) || value <= 0 || value > 100) {
+                    callback(new Error('日报任务进度必须为大于0且小于等于100的整数'));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                loading: null,
+                addDailyBtnVisible: true,
+                dailyOwner: '',
+                dailyOwnerVisible: false,
+                searchUserFlag: false,
+                searchDailyFlag: false,
+                currentUserId: '',
+                account: '',
+                username: '',
+                department: '',
+                activeIndex: '1',
+                activeName: 'first',
+                productOptions: [],
+                departmentOptions: [],
+                progressOptions: [],
+                dailyList: [],
+                userList: [],
+                showHeader: false,
+                dailyTableHeaderList: [],
+                tableLoading: true,
+                labelWidth: '120px',
+                tab1_show: false,
+                tab2_show: false,
+                tab3_show: false,
+                changePwdLinkVisible: false,
+                changePersonalInfoVisible: false,
+                changePwdDialogVisible: false,
+                editDailyDialogVisible: false,
+                addDailyDialogVisible: false,
+                delDailyBtnShow: false,
+                editDailyBtnShow: false,
+                editUserDialogVisible: false,
+                addUserDialogVisible: false,
+                changePersonalInfoDialogVisible: false,
+                changePwdForm: {
+                    password: ''
+                },
+                dailyForm: {
+                    userId: '',
+                    pageNum: 1,
+                    pageSize: 5,
+                    product: '',
+                    content: '',
+                    progress: '',
+                    startDt: '',
+                    endDt: '',
+                    dateRange: ''
+                },
+                dailyTotal: 0,
+                editDailyForm: {
+                    product: '',
+                    content: '',
+                    progress: 100,
+                    note: '',
+					insertDt: ''
+                },
+                addDailyFormList: [
+                    {
+                        product: '',
+                        content: '',
+                        progress: 100,
+                        note: ''
+                    }
+                ],
+                addDailyForm: {
+                    addDailyFormData: []
+                },
+                addDailyFormTitle: {
+                    titleFlag: true,
+                    deleteBtnShow: true
+                },
+                addDailyFormProduct: {
+                    labelName: "所属产品",
+                    product: "",
+                    propName: "product",
+                    prop: "product",
+                    productFlag: true,
+                    productOptions: []
+                },
+                addDailyFormProgress: {
+                    labelName: "任务进度",
+                    progress: 100,
+                    propName: "progress",
+                    prop: "progress",
+                    progressFlag: true
+                },
+                addDailyFormContent: {
+                    labelName: "任务内容",
+                    content: "",
+                    propName: "content",
+                    prop: "content",
+                    contentFlag: true
+                },
+                addDailyFormNote: {
+                    labelName: "任务备注",
+                    note: "",
+                    propName: "note",
+                    prop: "note",
+                    noteFlag: true,
+                },
+                addDailyFormInsertDt: {
+                    labelName: "任务日期",
+                    insertDt: moment().format('YYYY-MM-DD'),
+                    propName: "insertDt",
+                    prop: "insertDt",
+                    insertDtFlag: true
+                },
+                userForm: {
+                    pageNum: 1,
+                    pageSize: 5,
+                    department: '技术部',
+                    name: '',
+                    account: '',
+                    startDt: '',
+                    endDt: '',
+                    dateRange: ''
+                },
+                userTotal: 0,
+                editUserForm: {
+                    account: '',
+                    name: '',
+                    department: '',
+                    password: ''
+                },
+                addUserForm: {
+                    account: '',
+                    name: '',
+                    department: '',
+                    password: ''
+                },
+                totalDailyForm: {
+                    department: '技术部',
+                    currentDay: moment().format('YYYY-MM-DD')
+                },
+                rules: {
+                    account: [
+                        {required: true, validator: checkAccount, trigger: 'blur'},
+                    ],
+                    name: [
+                        {required: true, validator: checkUsername, trigger: 'blur'},
+                    ],
+                    department: [
+                        {required: true, validator: checkDepartment, trigger: 'blur'},
+                    ],
+                    password: [
+                        {required: false, validator: checkPassword, trigger: 'blur'},
+                    ],
+                    product: [
+                        {required: true, validator: checkProduct, trigger: 'blur'},
+                    ],
+                    progress: [
+                        {required: true, validator: checkProgress, trigger: 'blur'},
+                    ],
+                    content: [
+                        {required: true, message: '日报任务内容不能为空', trigger: 'blur'},
+                    ]
+                },
+                rules1: {
+                    account: [
+                        {required: true, validator: checkAccount, trigger: 'blur'},
+                    ],
+                    name: [
+                        {required: true, validator: checkUsername, trigger: 'blur'},
+                    ],
+                    department: [
+                        {required: true, validator: checkDepartment, trigger: 'blur'},
+                    ],
+                    password: [
+                        {required: true, validator: checkPassword1, trigger: 'blur'},
+                    ]
+                },
+                pickerOptions: {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now();
+                    },
+                    shortcuts: [{
+                        text: '今天',
+                        onClick(picker) {
+                            picker.$emit('pick', new Date());
+                        }
+                    }, {
+                        text: '昨天',
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24);
+                            picker.$emit('pick', date);
+                        }
+                    }, {
+                        text: '一周前',
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', date);
+                        }
+                    }]
+                },
+                totalDailyList: []
+            }
+        },
+        mounted: function () {
+            this.initShowTab();
+            this.checkLogin();
+            setTimeout(() => {
+                this.tableLoading = false;
+            }, 1000);
+        },
+        created: function () {
+            this.getJsonData();
+            this.openFullScreen();
+        },
+        methods: {
+            async getJsonData() {
+                const {data: {productOptions, departmentOptions, progressOptions}} = await getJsonData();
+                this.productOptions = productOptions;
+                this.addDailyFormProduct.productOptions = productOptions;
+                this.departmentOptions = departmentOptions;
+                this.progressOptions = progressOptions;
+                this.renderAddDailyFromData();
+            },
+            renderAddDailyFromData() {
+                let {...title} = this.addDailyFormTitle;
+                let {...product} = this.addDailyFormProduct;
+                let {...progress} = this.addDailyFormProgress;
+                let {...content} = this.addDailyFormContent;
+                let {...note} = this.addDailyFormNote;
+                let {...insertDt} = this.addDailyFormInsertDt;
+                this.addDailyForm.addDailyFormData.push(title, product, progress, content, note, insertDt);
+                this.addDailyForm.addDailyFormData[0].deleteBtnShow = false;
+            },
+            delDailyItem(i) {
+                this.addDailyForm.addDailyFormData.splice(i, i + 6);
+            },
+            async checkLogin() {
+                if (!localStorage.userId) {
+                    location.href = './login.html';
+                }
+                const {success, data, msg} = await getUser({id: localStorage.userId});
+                if (success) {
+                    this.currentUserId = localStorage.userId;
+                    this.account = data.account;
+                    this.username = data.name;
+                    this.department = data.department;
+                    if (data.isAdmin && data.isAdmin === '1') {
+                        this.activeIndex = '3';
+                        this.activeName = 'three';
+                        this.delDailyBtnShow = true;
+                        this.changePersonalInfoVisible = true;
+                        setTimeout(() => {
+                            this.tab2_show = true;
+                            this.tab3_show = true;
+                        }, 500);
+                        this.loadDailyList();
+                        this.loadUserList();
+                        this.loadTotalDailyList();
+                    } else {
+                        this.editDailyBtnShow = true;
+                        this.changePwdLinkVisible = true;
+                        this.loadDailyList();
+                    }
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: msg,
+                        center: true,
+                        offset: 300,
+                        duration: 1500
+                    });
+					setTimeout(() => {
+						location.href = './login.html';
+					}, 1500);
+                }
+            },
+            openFullScreen() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '拼命加载中...',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                setTimeout(() => {
+                    loading.close();
+                }, 1200);
+            },
+            openLoading() {
+                this.loading = this.$loading({
+                    lock: true,
+                    text: '拼命加载中...',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+            },
+            closeLoading() {
+                setTimeout(() => this.loading.close(), 1000);
+            },
+            initShowTab() {
+                setTimeout(function () {
+                    document.querySelector('#tab-first').style.display = 'none';
+                    document.querySelector('#tab-second').style.display = 'none';
+                    document.querySelector('#tab-three').style.display = 'none';
+                });
+                setTimeout(() => {
+                    this.tab1_show = true;
+                    this.tab2_show = false;
+                    this.tab2_show = false;
+                });
+            },
+            async loadDailyList() {
+                const {success, data, msg, total} = await dailyList({
+                    pageNum: this.dailyForm.pageNum,
+                    pageSize: this.dailyForm.pageSize,
+                    userId: this.currentUserId
+                });
+
+                if (success) {
+                    this.dailyList = data;
+                    this.dailyTotal = total;
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: msg,
+                        center: true,
+                        offset: 300,
+                        duration: 1500
+                    });
+                }
+            },
+            async loadUserList() {
+                const {success, data, msg, total} = await userList({
+                    pageNum: this.userForm.pageNum,
+                    pageSize: this.userForm.pageSize
+                });
+                if (success) {
+                    this.userList = data;
+                    this.userTotal = total;
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: msg,
+                        center: true,
+                        offset: 300,
+                        duration: 1500
+                    });
+                }
+            },
+            async loadTotalDailyList() {
+				this.totalDailyForm.currentDay = moment(this.totalDailyForm.currentDay).format('YYYY-MM-DD');
+                const {success, data, msg} = await totalDailyList(this.totalDailyForm);
+                if (success) {
+                    let _obj = {};
+                    _obj.currentDay = this.totalDailyForm.currentDay;
+                    _obj.contentList = data;
+                    this.totalDailyList = [_obj];
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: msg,
+                        center: true,
+                        offset: 300,
+                        duration: 1500
+                    });
+                }
+            },
+            searchTotalDaily() {
+                this.loadTotalDailyList();
+            },
+            showPrevDaily() {
+                this.totalDailyForm.currentDay = moment(this.totalDailyForm.currentDay).subtract(1, 'days').format('YYYY-MM-DD');
+                this.loadTotalDailyList();
+            },
+            showNextDaily() {
+                if (moment(this.totalDailyForm.currentDay).isAfter(moment().subtract(1, 'days').format('YYYY-MM-DD'))) return;
+                this.totalDailyForm.currentDay = moment(this.totalDailyForm.currentDay).add(1, 'days').format('YYYY-MM-DD');
+                this.loadTotalDailyList();
+            },
+            handleClick(tab, event) {
+                console.log(tab, event);
+            },
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            addDaily() {
+                this.addDailyDialogVisible = true;
+            },
+            insertDaily(formName) {
+                this.$refs[formName].validate(async (valid) => {
+                    if (valid) {
+                        this.openLoading();
+                        let list = this.addDailyForm.addDailyFormData;
+                        let dailyList = [];
+                        for (let i = 0; i < list.length; i += 6) {
+                            console.log(list[i + 5].insertDt);
+                            let _obj = {};
+                            _obj.product = list[i + 1].product;
+                            _obj.progress = list[i + 2].progress;
+                            _obj.content = list[i + 3].content;
+                            _obj.note = list[i + 4].note;
+                            _obj.insertDt = moment(list[i + 5].insertDt).format('YYYY-MM-DD HH:mm:ss');
+                            // _obj.insertDt = moment(list[i + 5].insertDt).format('YYYY-MM-DD') + ' ' + moment().format('HH:mm:ss');
+                            dailyList.push(_obj);
+                        }
+                        console.log(dailyList);
+                        const {success, msg} = await insertDaily(dailyList);
+                        this.closeLoading();
+                        if (success) {
+                            this.loadDailyList();
+                            this.addDailyDialogVisible = false;
+                            this.addDailyForm.addDailyFormData.length = 0;
+                            this.renderAddDailyFromData();
+                            this.$message({
+                                type: 'success',
+                                message: '日报任务添加成功',
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: msg,
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        }
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            continueAddDaily() {
+                this.renderAddDailyFromData();
+            },
+            async searchDaily() {
+                this.openLoading();
+                this.searchDailyFlag = true;
+                this.dailyForm.userId = this.currentUserId;
+                this.dailyForm.dateRange ? this.dailyForm.startDt = moment(this.dailyForm.dateRange[0]).format('YYYY-MM-DD') + ' 00:00:00' : '';
+                this.dailyForm.dateRange ? this.dailyForm.endDt = moment(this.dailyForm.dateRange[1]).format('YYYY-MM-DD') + ' 23:59:59' : '';
+                const {success, data, msg, total} = await searchDaily(this.dailyForm);
+                this.closeLoading();
+                if (success) {
+                    this.dailyList = data;
+                    this.dailyTotal = total;
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: msg,
+                        center: true,
+                        offset: 300,
+                        duration: 1500
+                    });
+                }
+            },
+            editDaily(row) {
+                this.editDailyDialogVisible = true;
+                let {...data} = row;
+                this.editDailyForm = data;
+            },
+            updateDaily(formName) {
+                this.$refs[formName].validate(async (valid) => {
+                    if (valid) {
+                        this.openLoading();
+						this.editDailyForm.insertDt = moment(this.editDailyForm.insertDt).format('YYYY-MM-DD HH:mm:ss');
+                        const {success, msg} = await updateDaily(this.editDailyForm);
+                        this.closeLoading();
+                        if (success) {
+                            this.loadDailyList();
+                            this.editDailyDialogVisible = false;
+                            this.$message({
+                                type: 'success',
+                                message: '日报任务修改成功',
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: msg,
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        }
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+
+                });
+            },
+            async delDaily(row, index, rows) {
+                this.$confirm("确定删除此日报任务吗？", "提示", {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(async () => {
+                    const {success, msg} = await deleteDaily({userId: this.currentUserId, id: row.id});
+                    if (success) {
+                        this.$message({
+                            type: 'success',
+                            message: '日报任务删除成功',
+                            center: true,
+                            offset: 300,
+                            duration: 1500
+                        });
+                        rows.splice(index, 1);
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: msg,
+                            center: true,
+                            offset: 300,
+                            duration: 1500
+                        });
+                    }
+                }).catch(() => {
+                });
+            },
+            addUser() {
+                this.addUserDialogVisible = true;
+            },
+            insertUser(formName) {
+                this.$refs[formName].validate(async (valid) => {
+                    if (valid) {
+                        this.openLoading();
+                        const {success, msg} = await insertUser([this.addUserForm]);
+                        this.closeLoading();
+                        if (success) {
+                            this.loadUserList();
+                            this.addUserDialogVisible = false;
+                            this.addUserForm.department = '';
+                            this.addUserForm.name = '';
+                            this.addUserForm.account = '';
+                            this.addUserForm.password = '';
+                            this.$message({
+                                type: 'success',
+                                message: '员工添加成功',
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: msg,
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        }
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            async searchUser() {
+                this.openLoading();
+                this.searchUserFlag = true;
+                this.userForm.dateRange ? this.userForm.startDt = moment(this.userForm.dateRange[0]).format('YYYY-MM-DD') + ' 00:00:00' : '';
+                this.userForm.dateRange ? this.userForm.endDt = moment(this.userForm.dateRange[1]).format('YYYY-MM-DD') + ' 23:59:59' : '';
+                const {success, data, msg, total} = await searchUser(this.userForm);
+                this.closeLoading();
+                if (success) {
+                    this.userList = data;
+                    this.userTotal = total;
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: msg,
+                        center: true,
+                        offset: 300,
+                        duration: 1500
+                    });
+                }
+            },
+            editUser(row) {
+                this.editUserDialogVisible = true;
+                let {...data} = row;
+                this.editUserForm = data;
+            },
+            updateUser(formName) {
+                let _msg = formName === 'changePersonalInfoForm' ? '个人信息修改成功' : '员工信息修改成功';
+                this.$refs[formName].validate(async (valid) => {
+                    if (valid) {
+                        this.openLoading();
+                        const {success, msg} = await updateUser(this.editUserForm);
+                        this.closeLoading();
+                        if (success) {
+                            this.loadUserList();
+                            this.editUserDialogVisible = false;
+                            this.changePersonalInfoDialogVisible = false;
+                            this.$message({
+                                type: 'success',
+                                message: _msg,
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: msg,
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        }
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+
+                });
+            },
+            async delUser(row, index, rows) {
+                this.$confirm("确定删除此员工吗？", "提示", {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(async () => {
+                    const {success, msg} = await deleteUser({id: row.id});
+                    if (success) {
+                        this.$message({
+                            type: 'success',
+                            message: '员工删除成功',
+                            center: true,
+                            offset: 300,
+                            duration: 1500
+                        });
+                        rows.splice(index, 1);
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: msg,
+                            center: true,
+                            offset: 300,
+                            duration: 1500
+                        });
+                    }
+                }).catch(() => {
+                });
+            },
+            getUserDaily(row) {
+                this.addDailyBtnVisible = false;
+                this.currentUserId = row.id;
+                this.dailyOwner = row.name;
+                this.dailyOwnerVisible = true;
+                this.loadDailyList();
+                this.activeIndex = '1';
+                this.activeName = 'first';
+
+            },
+            handleDailySizeChange(size) {
+                this.dailyForm.pageSize = size;
+                this.dailyForm.pageNum = 1;
+                this.searchDailyFlag ? this.searchDaily() : this.loadDailyList();
+            },
+            handleDailyCurrentChange(page) {
+                this.dailyForm.pageNum = page;
+                this.searchDailyFlag ? this.searchDaily() : this.loadDailyList();
+            },
+            handleUserSizeChange(size) {
+                this.userForm.pageSize = size;
+                this.userForm.pageNum = 1;
+                this.searchUserFlag ? this.searchUser() : this.loadUserList();
+            },
+            handleUserCurrentChange(page) {
+                this.userForm.pageNum = page;
+                this.searchUserFlag ? this.searchUser() : this.loadUserList();
+            },
+            changePersonalInfo() {
+                this.editUserForm.account = this.account;
+                this.editUserForm.name = this.username;
+                this.editUserForm.department = this.department;
+                this.editUserForm.password = '';
+                this.changePersonalInfoDialogVisible = true;
+            },
+            changePwd(formName) {
+                this.$refs[formName].validate(async (valid) => {
+                    if (valid) {
+                        this.openLoading();
+                        const {success, msg} = await updateUser({password: this.changePwdForm.password});
+                        this.closeLoading();
+                        if (success) {
+                            this.$refs[formName].resetFields();
+                            this.changePwdDialogVisible = false;
+                            this.$message({
+                                type: 'success',
+                                message: '密码修改成功',
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: msg,
+                                center: true,
+                                offset: 300,
+                                duration: 1500
+                            });
+                        }
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            logout() {
+                this.$confirm("确定退出登录吗？", "提示", {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(() => {
+                    localStorage.clear();
+                    this.$message({
+                        type: 'success',
+                        message: '退出登录成功',
+                        center: true,
+                        offset: 300,
+                        duration: 1000
+                    });
+                    setTimeout(() => {
+                        location.href = './login.html';
+                    }, 1000);
+                }).catch(() => {
+                });
+            }
+        },
+        filters: {
+            dayConvert: function (val) {
+                return val.substring(0, 10);
+            },
+            weekDayConvert: function (val) {
+                let weekDay = parseInt(moment(val, 'YYYY-MM-DD').format('d'));
+                console.log(weekDay);
+                switch (weekDay) {
+                    case 1:
+                        return '周一';
+                    case 2:
+                        return '周二';
+                    case 3:
+                        return '周三';
+                    case 4:
+                        return '周四';
+                    case 5:
+                        return '周五';
+                    case 6:
+                        return '周六';
+                    case 0:
+                        return '周日';
+                }
+            },
+            progressConvert: function (val) {
+                console.log(val);
+                return val === 100 ? '已完成' : (val + '%');
+            }
+        },
+        watch: {
+            tab1_show: function (val) {
+                console.log(val);
+                if (val) {
+                    document.querySelector('#tab-first').style.display = 'inline-block';
+                } else {
+                    document.querySelector('#tab-first').style.display = 'none';
+                }
+            },
+            tab2_show: function (val) {
+                console.log(val);
+                if (val) {
+                    document.querySelector('#tab-second').style.display = 'inline-block';
+                } else {
+                    document.querySelector('#tab-second').style.display = 'none';
+                }
+            },
+            tab3_show: function (val) {
+                console.log(val);
+                if (val) {
+                    document.querySelector('#tab-three').style.display = 'inline-block';
+                } else {
+                    document.querySelector('#tab-three').style.display = 'none';
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

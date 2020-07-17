@@ -1,0 +1,3 @@
+2020-06-11 19:25:13.991 [MyHikariCP housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=19h59m15s956ms737µs900ns).
+2020-06-11 21:41:10.080 [MyHikariCP housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=1h31m2s910ms459µs700ns).
+2020-06-11 22:34:37.428 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning

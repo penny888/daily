@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.daily.dao.mybatis.UserMapper">
+    <select id="searchUser" resultType="com.daily.entity.DailyUser">
+        SELECT
+            id,
+            `name`,
+            account,
+            is_admin,
+            department,
+            insert_dt
+        FROM
+            daily_user
+        WHERE
+            delete_flag = '0'
+        <if test="name != null and name != ''">
+            AND
+                name = #{name}
+        </if>
+        <if test="account != null and account != ''">
+            AND
+                account = #{account}
+        </if>
+        <if test="isAdmin != null and isAdmin != ''">
+            AND
+                is_admin = #{isAdmin}
+        </if>
+        <if test="department != null and department != ''">
+            AND
+                department = #{department}
+        </if>
+        <if test="startDt != null and startDt != ''">
+            <![CDATA[
+            AND
+                insert_dt >= #{startDt}
+            ]]>
+        </if>
+        <if test="endDt != null and endDt != ''">
+            <![CDATA[
+            AND
+                insert_dt <= #{endDt}
+            ]]>
+        </if>
+    </select>
+</mapper>

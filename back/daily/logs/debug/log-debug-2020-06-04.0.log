@@ -1,0 +1,88 @@
+2020-06-04 20:19:18.821 [restartedMain] DEBUG org.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2020-06-04 21:22:58.205 [restartedMain] DEBUG org.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2020-06-04 21:53:27.328 [restartedMain] DEBUG org.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2020-06-04 22:01:23.912 [restartedMain] DEBUG org.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2020-06-04 22:23:45.755 [restartedMain] DEBUG org.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2020-06-04 22:32:54.306 [restartedMain] DEBUG org.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2020-06-04 22:38:16.126 [http-nio-8888-exec-8] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==>  Preparing: SELECT count(0) FROM daily_content WHERE delete_flag = '0' AND user_id = ? 
+2020-06-04 22:38:16.133 [http-nio-8888-exec-8] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 22:38:16.143 [http-nio-8888-exec-8] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - <==      Total: 1
+2020-06-04 22:38:16.145 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==>  Preparing: SELECT id, user_id, product, content, progress, note, insert_dt FROM daily_content WHERE delete_flag = '0' AND user_id = ? ORDER BY id DESC LIMIT ? 
+2020-06-04 22:38:16.145 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 22:38:16.148 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - <==      Total: 5
+2020-06-04 22:38:16.151 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==>  Preparing: SELECT count(0) FROM (SELECT count(DISTINCT left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ?) table_count 
+2020-06-04 22:38:16.152 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 22:38:16.154 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - <==      Total: 1
+2020-06-04 22:38:16.154 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==>  Preparing: SELECT count(distinct left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ? LIMIT ? 
+2020-06-04 22:38:16.155 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 22:38:16.156 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - <==      Total: 1
+2020-06-04 22:40:13.160 [http-nio-8888-exec-3] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==>  Preparing: SELECT count(0) FROM daily_content WHERE delete_flag = '0' AND user_id = ? 
+2020-06-04 22:40:13.161 [http-nio-8888-exec-3] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 22:40:13.163 [http-nio-8888-exec-3] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - <==      Total: 1
+2020-06-04 22:40:13.164 [http-nio-8888-exec-3] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==>  Preparing: SELECT id, user_id, product, content, progress, note, insert_dt FROM daily_content WHERE delete_flag = '0' AND user_id = ? ORDER BY id DESC LIMIT ? 
+2020-06-04 22:40:13.164 [http-nio-8888-exec-3] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 22:40:13.168 [http-nio-8888-exec-3] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - <==      Total: 5
+2020-06-04 22:40:13.170 [http-nio-8888-exec-3] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==>  Preparing: SELECT count(0) FROM (SELECT count(DISTINCT left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ?) table_count 
+2020-06-04 22:40:13.170 [http-nio-8888-exec-3] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 22:40:13.171 [http-nio-8888-exec-3] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - <==      Total: 1
+2020-06-04 22:40:13.172 [http-nio-8888-exec-3] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==>  Preparing: SELECT count(distinct left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ? LIMIT ? 
+2020-06-04 22:40:13.172 [http-nio-8888-exec-3] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 22:40:13.173 [http-nio-8888-exec-3] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - <==      Total: 1
+2020-06-04 22:53:00.038 [http-nio-8888-exec-1] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==>  Preparing: SELECT count(0) FROM daily_content WHERE delete_flag = '0' AND user_id = ? AND product = ? AND progress = 100 
+2020-06-04 22:53:00.040 [http-nio-8888-exec-1] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==> Parameters: 1(Integer), 考场子系统(String)
+2020-06-04 22:53:00.042 [http-nio-8888-exec-1] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - <==      Total: 1
+2020-06-04 22:53:00.046 [http-nio-8888-exec-1] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==>  Preparing: SELECT count(0) FROM (SELECT count(DISTINCT left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ? AND product = ? AND progress = 100) table_count 
+2020-06-04 22:53:00.047 [http-nio-8888-exec-1] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==> Parameters: 1(Integer), 考场子系统(String)
+2020-06-04 22:53:00.048 [http-nio-8888-exec-1] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - <==      Total: 1
+2020-06-04 22:53:00.049 [http-nio-8888-exec-1] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==>  Preparing: SELECT count(distinct left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ? AND product = ? AND progress = 100 LIMIT ? 
+2020-06-04 22:53:00.050 [http-nio-8888-exec-1] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==> Parameters: 1(Integer), 考场子系统(String), 5(Integer)
+2020-06-04 22:53:00.051 [http-nio-8888-exec-1] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - <==      Total: 1
+2020-06-04 22:58:30.846 [restartedMain] DEBUG org.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2020-06-04 23:01:36.120 [http-nio-8888-exec-8] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==>  Preparing: SELECT count(0) FROM daily_content WHERE delete_flag = '0' AND user_id = ? 
+2020-06-04 23:01:36.127 [http-nio-8888-exec-8] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 23:01:36.137 [http-nio-8888-exec-8] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - <==      Total: 1
+2020-06-04 23:01:36.138 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==>  Preparing: SELECT id, user_id, product, content, progress, note, insert_dt FROM daily_content WHERE delete_flag = '0' AND user_id = ? ORDER BY id DESC LIMIT ? 
+2020-06-04 23:01:36.138 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 23:01:36.141 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - <==      Total: 5
+2020-06-04 23:01:36.143 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==>  Preparing: SELECT count(0) FROM (SELECT count(DISTINCT left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ?) table_count 
+2020-06-04 23:01:36.144 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 23:01:36.145 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - <==      Total: 1
+2020-06-04 23:01:36.145 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==>  Preparing: SELECT count(distinct left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ? LIMIT ? 
+2020-06-04 23:01:36.146 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 23:01:36.147 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - <==      Total: 1
+2020-06-04 23:03:14.709 [http-nio-8888-exec-6] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==>  Preparing: SELECT count(0) FROM daily_content WHERE delete_flag = '0' AND user_id = ? 
+2020-06-04 23:03:14.710 [http-nio-8888-exec-6] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 23:03:14.711 [http-nio-8888-exec-6] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - <==      Total: 1
+2020-06-04 23:03:14.712 [http-nio-8888-exec-6] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==>  Preparing: SELECT id, user_id, product, content, progress, note, insert_dt FROM daily_content WHERE delete_flag = '0' AND user_id = ? ORDER BY id DESC LIMIT ? 
+2020-06-04 23:03:14.712 [http-nio-8888-exec-6] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 23:03:14.714 [http-nio-8888-exec-6] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - <==      Total: 5
+2020-06-04 23:03:14.716 [http-nio-8888-exec-6] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==>  Preparing: SELECT count(0) FROM (SELECT count(DISTINCT left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ?) table_count 
+2020-06-04 23:03:14.717 [http-nio-8888-exec-6] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 23:03:14.718 [http-nio-8888-exec-6] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - <==      Total: 1
+2020-06-04 23:03:14.719 [http-nio-8888-exec-6] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==>  Preparing: SELECT count(distinct left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ? LIMIT ? 
+2020-06-04 23:03:14.719 [http-nio-8888-exec-6] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 23:03:14.721 [http-nio-8888-exec-6] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - <==      Total: 1
+2020-06-04 23:03:56.503 [http-nio-8888-exec-8] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==>  Preparing: SELECT count(0) FROM daily_content WHERE delete_flag = '0' AND user_id = ? 
+2020-06-04 23:03:56.504 [http-nio-8888-exec-8] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 23:03:56.505 [http-nio-8888-exec-8] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - <==      Total: 1
+2020-06-04 23:03:56.507 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==>  Preparing: SELECT id, user_id, product, content, progress, note, insert_dt FROM daily_content WHERE delete_flag = '0' AND user_id = ? ORDER BY id DESC LIMIT ? 
+2020-06-04 23:03:56.508 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 23:03:56.509 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - <==      Total: 5
+2020-06-04 23:03:56.511 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==>  Preparing: SELECT count(0) FROM (SELECT count(DISTINCT left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ?) table_count 
+2020-06-04 23:03:56.512 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 23:03:56.513 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - <==      Total: 1
+2020-06-04 23:03:56.514 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==>  Preparing: SELECT count(distinct left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ? LIMIT ? 
+2020-06-04 23:03:56.515 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 23:03:56.516 [http-nio-8888-exec-8] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - <==      Total: 1
+2020-06-04 23:05:01.666 [http-nio-8888-exec-4] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==>  Preparing: SELECT count(0) FROM daily_content WHERE delete_flag = '0' AND user_id = ? 
+2020-06-04 23:05:01.666 [http-nio-8888-exec-4] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 23:05:01.667 [http-nio-8888-exec-4] DEBUG c.daily.dao.mybatis.DailyMapper.searchDaily_COUNT - <==      Total: 1
+2020-06-04 23:05:01.668 [http-nio-8888-exec-4] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==>  Preparing: SELECT id, user_id, product, content, progress, note, insert_dt FROM daily_content WHERE delete_flag = '0' AND user_id = ? ORDER BY id DESC LIMIT ? 
+2020-06-04 23:05:01.668 [http-nio-8888-exec-4] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 23:05:01.670 [http-nio-8888-exec-4] DEBUG com.daily.dao.mybatis.DailyMapper.searchDaily - <==      Total: 5
+2020-06-04 23:05:01.672 [http-nio-8888-exec-4] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==>  Preparing: SELECT count(0) FROM (SELECT count(DISTINCT left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ?) table_count 
+2020-06-04 23:05:01.672 [http-nio-8888-exec-4] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - ==> Parameters: 1(Integer)
+2020-06-04 23:05:01.673 [http-nio-8888-exec-4] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily_COUNT - <==      Total: 1
+2020-06-04 23:05:01.675 [http-nio-8888-exec-4] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==>  Preparing: SELECT count(distinct left(insert_dt, 10)) FROM daily_content WHERE delete_flag = '0' AND user_id = ? LIMIT ? 
+2020-06-04 23:05:01.676 [http-nio-8888-exec-4] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - ==> Parameters: 1(Integer), 5(Integer)
+2020-06-04 23:05:01.678 [http-nio-8888-exec-4] DEBUG com.daily.dao.mybatis.DailyMapper.countDaily - <==      Total: 1
