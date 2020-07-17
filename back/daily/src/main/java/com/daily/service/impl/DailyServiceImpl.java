@@ -105,7 +105,7 @@ public class DailyServiceImpl implements DailyService {
             entity.setProgress(content.getProgress());
             entity.setContent(content.getContent());
             String note = content.getNote();
-            if (Objects.nonNull(note) && Strings.isNotEmpty(note) && Strings.isNotBlank(note)) {
+            if (Objects.nonNull(note)) {
                 entity.setNote(note);
             }
             String insertDt = content.getInsertDt();
